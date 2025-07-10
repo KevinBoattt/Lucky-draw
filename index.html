@@ -1,25 +1,47 @@
-import random
-import time
-import sys
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lucky Draw Spinner 🎯</title>
+  <style>
+    body {
+      text-align: center;
+      font-family: Arial, sans-serif;
+      margin-top: 100px;
+    }
+    #result {
+      font-size: 2em;
+      margin-top: 20px;
+      color: green;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎉 Lucky Draw Spinner 🎉</h1>
+  <button onclick="spin()">Spin the Wheel</button>
+  <div id="result"></div>
 
-participants = ["Alice", "Bob", "Charlie", "Diana", "Ethan", "Fiona"]
+  <script>
+    const names = ["Alice", "Bob", "Charlie", "Diana", "Ethan", "Fiona"];
 
-def spinning_animation(options, duration=3, delay=0.1):
-    start_time = time.time()
-    while time.time() - start_time < duration:
-        selected = random.choice(options)
-        sys.stdout.write(f"\rSpinning... 🎯 {selected}   ")
-        sys.stdout.flush()
-        time.sleep(delay)
-        delay += 0.02  # slows down gradually
-    print("\n")
-
-def lucky_draw(participants):
-    print("🎉 Welcome to the Lucky Draw! 🎉")
-    time.sleep(1)
-    print("Spinning the wheel...")
-    spinning_animation(participants, duration=4)
-    winner = random.choice(participants)
-    print(f"🏆 The lucky winner is: {winner} 🎊")
-
-lucky_draw(participants)
+    function spin() {
+      document.getElementById("result").innerHTML = "Spinning...";
+      let index = 0;
+      let spins = 20;
+      let interval = setInterval(() => {
+        document.getElementById("result").innerHTML = names[index % names.length];
+        index++;
+        spins--;
+        if (spins === 0) {
+          clearInterval(interval);
+          const winner = names[Math.floor(Math.random() * names.length)];
+          document.getElementById("result").innerHTML = `🎊 Winner: ${winner} 🏆`;
+        }
+      }, 100);
+    }
+  </script>
+</body>
+</html>

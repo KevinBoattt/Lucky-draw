@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lucky Draw Spinner 🎯</title>
+  <style>
+    body {
+      text-align: center;
+      font-family: Arial, sans-serif;
+      margin-top: 100px;
+    }
+    #result {
+      font-size: 2em;
+      margin-top: 20px;
+      color: green;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎉 Lucky Draw Spinner 🎉</h1>
+  <button onclick="spin()">Spin the Wheel</button>
+  <div id="result"></div>
+
+  <script>
+    const names = ["Alice", "Bob", "Charlie", "Diana", "Ethan", "Fiona"];
+
+    function spin() {
+      document.getElementById("result").innerHTML = "Spinning...";
+      let index = 0;
+      let spins = 20;
+      let interval = setInterval(() => {
+        document.getElementById("result").innerHTML = names[index % names.length];
+        index++;
+        spins--;
+        if (spins === 0) {
+          clearInterval(interval);
+          const winner = names[Math.floor(Math.random() * names.length)];
+          document.getElementById("result").innerHTML = `🎊 Winner: ${winner} 🏆`;
+        }
+      }, 100);
+    }
+  </script>
+</body>
+</html>

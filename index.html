@@ -1,183 +1,604 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Advanced Lucky Draw 🎯</title>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      text-align: center;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-      transition: background-color 0.3s, color 0.3s;
-    }
-    .container {
-      max-width: 700px;
-      margin: 60px auto;
-      padding: 20px;
-      border-radius: 10px;
-      background: white;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    }
-    h1 {
-      font-size: 2.5em;
-      margin-bottom: 10px;
-    }
-    textarea, input[type=number] {
-      width: 90%;
-      font-size: 16px;
-      padding: 10px;
-      margin-top: 10px;
-    }
-    button {
-      margin: 10px 5px;
-      padding: 10px 20px;
-      font-size: 16px;
-      border: none;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-    .spin { background-color: #007bff; color: white; }
-    .reset { background-color: #dc3545; color: white; }
-    .theme-toggle { background-color: #343a40; color: white; }
-    .shuffle { background-color: #28a745; color: white; }
-    #result {
-      font-size: 1.8em;
-      margin-top: 20px;
-      color: green;
-    }
-    #history {
-      margin-top: 30px;
-      text-align: left;
-      max-height: 150px;
-      overflow-y: auto;
-    }
-    #history h3 {
-      margin-bottom: 5px;
-    }
-    .dark-mode {
-      background-color: #1e1e1e;
-      color: #f1f1f1;
-    }
-    .dark-mode .container {
-      background: #2c2c2c;
-    }
-    .dark-mode textarea,
-    .dark-mode input[type=number] {
-      background-color: #444;
-      color: #fff;
-    }
-  </style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Kevin — Cybersecurity & Strategy</title>
+<meta name="description" content="Kevin — cyber security student, strategist, and lifelong learner. Portfolio with projects, skills, and contact." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23007f7f'/%3E%3Ctext x='50' y='58' text-anchor='middle' font-size='44' fill='white'%3E%F0%9F%8C%90%3C/text%3E%3C/svg%3E">
+
+<style>
+  /* ---------- ROOT & RESET ---------- */
+  :root{
+    --bg-1: #081224;
+    --bg-2: #061224;
+    --accent: #00d4ff;
+    --accent-2: #8b5cf6;
+    --muted: #99a3b2;
+    --card: rgba(255,255,255,0.04);
+    --glass: rgba(255,255,255,0.03);
+    --success: #4ade80;
+    --danger: #fb7185;
+    --radius: 14px;
+    --maxw: 1100px;
+    --ui-gap: 18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family: Inter, "Segoe UI", Roboto, system-ui, -apple-system, "Helvetica Neue", Arial;
+    color: #e6f0ff;
+    background: radial-gradient(800px 400px at 10% 10%, rgba(139,92,246,0.06), transparent 10%),
+                radial-gradient(700px 300px at 90% 90%, rgba(0,212,255,0.03), transparent 8%),
+                linear-gradient(180deg,var(--bg-1),var(--bg-2));
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    min-height:100%;
+    overflow-x:hidden;
+  }
+
+  a{color:var(--accent); text-decoration:none}
+  img{max-width:100%;display:block}
+
+  /* ---------- LAYOUT ---------- */
+  .site {
+    max-width: var(--maxw);
+    margin: 40px auto;
+    padding: 28px;
+    display:grid;
+    grid-template-columns: 1fr 380px;
+    gap: 28px;
+    align-items:start;
+  }
+
+  /* ---------- TOP NAV ---------- */
+  header.topbar{
+    position: fixed;
+    left: 0; right: 0; top: 12px;
+    display:flex;
+    justify-content:center;
+    z-index: 80;
+    pointer-events: none;
+  }
+  .topbar-inner{
+    width: min(1180px, calc(100% - 40px));
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    backdrop-filter: blur(8px) saturate(120%);
+    border-radius: 12px;
+    padding:10px 14px;
+    display:flex;
+    gap:12px;
+    align-items:center;
+    justify-content:space-between;
+    pointer-events: all;
+    box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+    border:1px solid rgba(255,255,255,0.03);
+  }
+  .brand{display:flex;gap:12px;align-items:center}
+  .logo{
+    width:44px;height:44px;border-radius:10px;
+    background: linear-gradient(135deg,var(--accent-2),var(--accent));
+    display:flex;align-items:center;justify-content:center;font-weight:800;color:#041226;
+    box-shadow: 0 8px 20px rgba(125,73,255,0.12);
+    flex:0 0 44px;
+  }
+  .brand h1{font-size:16px; margin:0}
+  nav.topnav{display:flex;gap:10px;align-items:center}
+  nav.topnav a{padding:8px 10px;border-radius:8px;font-size:14px;color: #e8f6ff;transition:background .18s, color .18s}
+  nav.topnav a:hover{background:rgba(255,255,255,0.02); color:var(--accent)}
+
+  /* ---------- MAIN LEFT: HERO & CONTENT ---------- */
+  .main{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius: var(--radius);
+    padding:28px;
+    border:1px solid rgba(255,255,255,0.02);
+    box-shadow: 0 20px 50px rgba(2,6,23,0.6);
+    position:relative;
+    overflow:hidden;
+  }
+
+  /* Typing intro */
+  .hero{
+    display:flex;
+    gap:20px;
+    align-items:center;
+  }
+  .hero-left{flex:1}
+  .eyebrow{
+    font-size:13px;color:var(--muted);margin-bottom:8px;
+  }
+  .hero h2{
+    font-size:32px; line-height:1.02; margin-bottom:8px;
+    letter-spacing:-0.4px;
+  }
+  .typing{
+    color:var(--accent);
+    font-weight:600;
+  }
+  .hero p{color:#cfe9ff;max-width:60ch;margin-bottom:14px}
+
+  /* quick actions */
+  .actions{display:flex;gap:12px;margin-top:10px;flex-wrap:wrap}
+  .btn{
+    background:linear-gradient(90deg,var(--accent),var(--accent-2));
+    color:#041226;padding:10px 14px;border-radius:10px;border:0;font-weight:700;cursor:pointer;
+    box-shadow: 0 8px 20px rgba(0,212,255,0.08);
+  }
+  .btn.ghost{
+    background:transparent;color:var(--accent);border:1px solid rgba(125,249,255,0.08)
+  }
+
+  /* animated avatar blob */
+  .avatar-blob{
+    width:220px;height:220px;border-radius:18px;flex:0 0 220px;
+    display:flex;align-items:center;justify-content:center;position:relative;
+    background: linear-gradient(135deg, rgba(122,73,255,0.12), rgba(0,212,255,0.06));
+    border:1px solid rgba(255,255,255,0.03);
+    overflow:visible;
+  }
+  .avatar-svg{width:140px;height:140px}
+
+  /* ---------- RIGHT: SIDEBAR ---------- */
+  .sidebar{
+    position:sticky; top:90px;
+    display:flex;flex-direction:column;gap:14px;
+  }
+  .card{
+    background:var(--card); padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.02)
+  }
+
+  .skill {
+    display:flex;flex-direction:column;gap:8px;margin-bottom:8px;
+  }
+  .skill .label{display:flex;justify-content:space-between;font-size:13px;color:var(--muted)}
+  .bar{
+    height:12px;background:rgba(255,255,255,0.03);border-radius:999px;overflow:hidden;
+  }
+  .bar > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:999px;transition:width 1.2s cubic-bezier(.2,.9,.2,1)}
+
+  /* Projects grid */
+  .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+  .project{
+    padding:14px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+    cursor:pointer;transition:transform .18s, box-shadow .18s;
+  }
+  .project:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(3,5,20,0.6)}
+  .project h4{margin-bottom:8px}
+
+  /* timeline / about text */
+  .lead{color:#dbefff;margin-bottom:8px}
+  .muted{color:var(--muted)}
+
+  /* contact */
+  .contact-row{display:flex;gap:10px;align-items:center}
+
+  /* back to top */
+  .to-top{
+    position:fixed;right:18px;bottom:18px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#041226;border-radius:12px;padding:10px 12px;border:0;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,0.6)
+  }
+
+  /* project modal */
+  .modal{
+    position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(2,6,23,0.6),rgba(2,6,23,0.85));z-index:120;
+  }
+  .modal.show{display:flex}
+  .modal-card{width:min(960px,95%);max-height:85vh;overflow:auto;background:#061622;padding:20px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+  .close{background:transparent;border:0;color:var(--muted);font-weight:700;cursor:pointer}
+
+  /* scroll reveal utility */
+  .reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease, transform .7s ease}
+  .reveal.show{opacity:1;transform:none}
+
+  /* responsive */
+  @media (max-width:980px){
+    .site{grid-template-columns:1fr; padding:18px}
+    .avatar-blob{display:none}
+    .sidebar{position:static}
+  }
+  @media (max-width:520px){
+    .hero h2{font-size:22px}
+  }
+</style>
 </head>
 <body>
-  <div class="container">
-    <h1>🎯 Advanced Lucky Draw App</h1>
-    <p>Enter names (comma-separated):</p>
-    <textarea id="nameInput">Alice,Bob,Charlie,Diana,Ethan,Fiona</textarea><br>
-    <p>Max winners allowed (optional):</p>
-    <input type="number" id="maxWinners" placeholder="e.g. 3"><br>
-    <button class="spin" onclick="startDraw()">Spin</button>
-    <button class="shuffle" onclick="shuffleNames()">Shuffle</button>
-    <button class="reset" onclick="resetGame()">Reset</button>
-    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
-    <div id="result"></div>
-    <div id="history">
-      <h3>🏅 Winner History:</h3>
-      <ul id="winnerList"></ul>
+
+<!-- PARTICLE CANVAS (z-index under content) -->
+<canvas id="particles" aria-hidden="true" style="position:fixed;inset:0;z-index:0;pointer-events:none"></canvas>
+
+<!-- TOP NAV -->
+<header class="topbar" role="banner">
+  <div class="topbar-inner" role="navigation" aria-label="Main navigation">
+    <div class="brand" aria-hidden="false">
+      <div class="logo" aria-hidden="true">K</div>
+      <div>
+        <h1 style="font-size:15px;margin:0">Kevin</h1>
+        <div style="font-size:12px;color:var(--muted)">Cybersecurity • Strategy • Leadership</div>
+      </div>
     </div>
-    <audio id="drumroll" src="https://www.soundjay.com/misc/sounds/bell-ringing-01.mp3"></audio>
-    <audio id="winnerSound" src="https://www.soundjay.com/human/sounds/applause-01.mp3"></audio>
+
+    <nav class="topnav" aria-label="Top navigation">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+      <button id="themeToggle" title="Toggle theme" aria-pressed="false" class="btn ghost" style="padding:8px 10px">Toggle Theme</button>
+    </nav>
   </div>
+</header>
 
-  <script>
-    let winners = [];
-    let isDark = false;
+<!-- MAIN PAGE -->
+<main class="site" role="main" aria-labelledby="main-title" style="position:relative;z-index:10">
 
-    function launchConfetti() {
-      confetti({ particleCount: 200, spread: 70, origin: { y: 0.6 } });
-    }
+  <!-- LEFT: main content -->
+  <section class="main" aria-labelledby="main-title">
+    <div style="display:flex;gap:22px;align-items:flex-start">
+      <div class="hero-left" style="flex:1">
+        <div class="eyebrow">Student • Builder • Strategist</div>
+        <h2 id="main-title">Hi, I’m <span style="color:var(--accent)">Kevin</span> <span aria-hidden="true">👋</span></h2>
+        <div style="font-weight:600;margin-bottom:12px" class="typing" id="typed"></div>
+        <p class="lead">First-year cybersecurity student who mixes technical hacking labs with war-theory thinking. I build labs, write about leadership and resilience, and hack ethically to learn defensively.</p>
 
-    function shuffle(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
+        <div class="actions">
+          <a class="btn" id="downloadResume" href="#" download="Kevin_Resume.txt">Download Resume</a>
+          <button class="btn ghost" id="copyEmail">Copy Email</button>
+          <a class="btn ghost" href="#contact">Contact</a>
+        </div>
+
+        <!-- About -->
+        <div style="margin-top:26px;">
+          <h3 style="color:var(--accent);margin-bottom:8px">About Me</h3>
+          <p class="muted">Curious, disciplined, and strategic. I love breaking systems (in safe labs) to understand how to protect them. I read history to sharpen tactical thinking. I'm building a personal cyber lab and documenting lessons publicly.</p>
+          <ul style="margin-top:10px;color:var(--muted);list-style:disc;padding-left:18px">
+            <li>Setting up VMs & labs for practical learning</li>
+            <li>Studying Linux, networking, and threat analysis</li>
+            <li>Applying leadership lessons from history to teams</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Animated avatar blob -->
+      <div class="avatar-blob" aria-hidden="true">
+        <!-- decorative animated SVG avatar -->
+        <svg class="avatar-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Kevin avatar">
+          <defs>
+            <linearGradient id="g1" x1="0" x2="1">
+              <stop offset="0" stop-color="#8b5cf6"/>
+              <stop offset="1" stop-color="#00d4ff"/>
+            </linearGradient>
+            <filter id="blur"><feGaussianBlur stdDeviation="6" /></filter>
+          </defs>
+          <g filter="url(#blur)" style="mix-blend-mode:screen">
+            <ellipse cx="100" cy="80" rx="72" ry="58" fill="url(#g1)" opacity="0.85"/>
+            <ellipse cx="80" cy="120" rx="58" ry="40" fill="#072a3a" opacity="0.15"/>
+          </g>
+          <g>
+            <circle cx="100" cy="92" r="36" fill="#041226"/>
+            <text x="100" y="106" font-size="36" text-anchor="middle" fill="#e6f0ff" font-weight="700" font-family="Inter,Arial,sans-serif">K</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Skills / timeline / projects -->
+    <div style="margin-top:28px;display:grid;grid-template-columns:1fr 1fr;gap:18px">
+      <div class="card reveal" id="skills">
+        <h3 style="color:var(--accent);margin-bottom:8px">Skills</h3>
+        <div class="skill">
+          <div class="label"><span>Cybersecurity</span><span class="muted">Advanced</span></div>
+          <div class="bar" aria-hidden="true"><i data-width="92%"></i></div>
+        </div>
+        <div class="skill">
+          <div class="label"><span>Linux & Shell</span><span class="muted">Intermediate</span></div>
+          <div class="bar"><i data-width="82%"></i></div>
+        </div>
+        <div class="skill">
+          <div class="label"><span>Web Dev</span><span class="muted">Intermediate</span></div>
+          <div class="bar"><i data-width="68%"></i></div>
+        </div>
+        <div class="skill">
+          <div class="label"><span>Strategy & Leadership</span><span class="muted">Strong</span></div>
+          <div class="bar"><i data-width="86%"></i></div>
+        </div>
+      </div>
+
+      <div class="card reveal" id="timeline">
+        <h3 style="color:var(--accent);margin-bottom:8px">Quick Timeline</h3>
+        <p class="muted" style="margin-bottom:8px">2024 — Started formal cybersecurity learning. 2025 — Built personal cyber lab and launched projects on GitHub Pages.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <span style="background:rgba(255,255,255,0.03);padding:6px 10px;border-radius:999px;color:var(--muted);font-size:13px">VMs</span>
+          <span style="background:rgba(255,255,255,0.03);padding:6px 10px;border-radius:999px;color:var(--muted);font-size:13px">Pentesting</span>
+          <span style="background:rgba(255,255,255,0.03);padding:6px 10px;border-radius:999px;color:var(--muted);font-size:13px">Leadership</span>
+        </div>
+      </div>
+
+      <!-- Projects -->
+      <div class="card reveal" style="grid-column:1 / -1">
+        <h3 style="color:var(--accent);margin-bottom:12px">Projects</h3>
+        <div class="projects-grid" id="projects">
+          <div class="project" data-proj="lab">
+            <h4>Personal Cyber Lab</h4>
+            <p class="muted">A virtual environment with VMs for learning offensive & defensive techniques.</p>
+          </div>
+          <div class="project" data-proj="blog">
+            <h4>Leadership Blog</h4>
+            <p class="muted">Short essays applying war theory and resilience to modern leadership.</p>
+          </div>
+          <div class="project" data-proj="tools">
+            <h4>Tooling & Scripts</h4>
+            <p class="muted">Small utilities and scripts to speed up lab workflows (Linux-first).</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- RIGHT: Sidebar -->
+  <aside class="sidebar" aria-label="Sidebar">
+    <div class="card reveal">
+      <h4 style="margin-bottom:8px">Contact</h4>
+      <p class="muted">Want to collaborate or just chat about tech, strategy or leadership?</p>
+      <div style="margin-top:8px" class="contact-row">
+        <a href="mailto:kevin@example.com" class="btn" id="emailLink">Email</a>
+        <button class="btn ghost" id="copyPhone">Copy Phone</button>
+      </div>
+      <div style="margin-top:10px;font-size:13px;color:var(--muted)">
+        <strong>Email</strong><br/>
+        <span id="emailText">kevin@example.com</span>
+      </div>
+    </div>
+
+    <div class="card reveal">
+      <h4 style="margin-bottom:8px">Skills Snapshot</h4>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2v6" stroke="#00d4ff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div>
+            <div style="font-weight:700">Ops & Labs</div>
+            <div class="muted" style="font-size:13px">VMs, containers, networks</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 12h18" stroke="#8b5cf6" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <div>
+            <div style="font-weight:700">Web & Tools</div>
+            <div class="muted" style="font-size:13px">HTML/CSS/JS & scripts</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card reveal">
+      <h4 style="margin-bottom:8px">Follow</h4>
+      <div style="display:flex;gap:8px">
+        <a href="#" aria-label="GitHub" style="padding:8px;border-radius:8px;background:rgba(255,255,255,0.02)">GitHub</a>
+        <a href="#" aria-label="Twitter" style="padding:8px;border-radius:8px;background:rgba(255,255,255,0.02)">X</a>
+      </div>
+    </div>
+  </aside>
+
+</main>
+
+<!-- PROJECT MODAL -->
+<div id="modal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="modal-card" role="document">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <h3 id="modalTitle">Project</h3>
+      <div>
+        <button class="close" id="modalClose">Close</button>
+      </div>
+    </div>
+    <div id="modalBody" style="color:var(--muted)"></div>
+  </div>
+</div>
+
+<!-- BACK TO TOP -->
+<button id="toTop" class="to-top" aria-label="Back to top">Top</button>
+
+<!-- ---------- SCRIPTS: INTERACTIONS & EFFECTS ---------- -->
+<script>
+/* ---------- UTILITY: SAFE DOM READY ---------- */
+const ready = (fn) => { if (document.readyState !== 'loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
+
+/* ---------- TYPING EFFECT ---------- */
+const phrases = [
+  "I build personal cyber labs.",
+  "I study war strategy to sharpen decisions.",
+  "I practice Linux, networking, and threat analysis.",
+  "I write about leadership and resilience."
+];
+
+let typeIndex = 0, charIndex = 0, typingEl;
+
+function tick() {
+  if (!typingEl) return;
+  const full = phrases[typeIndex];
+  typingEl.textContent = full.slice(0, charIndex);
+  charIndex++;
+  if (charIndex > full.length + 10) { // pause then next phrase
+    charIndex = 0;
+    typeIndex = (typeIndex + 1) % phrases.length;
+    setTimeout(tick, 500);
+    return;
+  }
+  setTimeout(tick, 40 + Math.random()*40);
+}
+
+/* ---------- PARTICLE BACKGROUND ---------- */
+function particlesInit() {
+  const canvas = document.getElementById('particles');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let w = canvas.width = innerWidth;
+  let h = canvas.height = innerHeight;
+  const ratio = Math.max(1, window.devicePixelRatio || 1);
+  canvas.width = w * ratio; canvas.height = h * ratio; canvas.style.width = w + 'px'; canvas.style.height = h + 'px'; ctx.scale(ratio,ratio);
+
+  let particles = [];
+  const count = Math.max(30, Math.floor((w*h) / 70000)); // scale with screen
+  for (let i=0;i<count;i++){
+    particles.push({
+      x: Math.random()*w,
+      y: Math.random()*h,
+      vx: (Math.random()-0.5)*0.4,
+      vy: (Math.random()-0.5)*0.4,
+      r: 1 + Math.random()*2,
+      hue: 180 + Math.random()*120,
+      life: Math.random()*300 + 60
+    });
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    particles.forEach(p=>{
+      p.x += p.vx; p.y += p.vy;
+      p.life--;
+      if (p.x < -10) p.x = w+10;
+      if (p.x > w+10) p.x = -10;
+      if (p.y < -10) p.y = h+10;
+      if (p.y > h+10) p.y = -10;
+      const alpha = Math.max(0, Math.min(1, p.life/360));
+      ctx.beginPath();
+      ctx.fillStyle = `hsla(${p.hue},85%,65%,${alpha*0.12})`;
+      ctx.arc(p.x,p.y,p.r*3,0,Math.PI*2);
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', ()=> {
+    w = canvas.width = innerWidth;
+    h = canvas.height = innerHeight;
+    canvas.width = w * ratio; canvas.height = h * ratio; canvas.style.width = w + 'px'; canvas.style.height = h + 'px'; ctx.scale(ratio,ratio);
+  });
+
+  draw();
+}
+
+/* ---------- REVEAL ON SCROLL & SKILL BARS ---------- */
+function initReveal() {
+  const reveals = document.querySelectorAll('.reveal');
+  const skillBars = document.querySelectorAll('.bar > i');
+  const observer = new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if (entry.isIntersecting){
+        entry.target.classList.add('show');
+        // if bar children exist, animate widths
+        skillBars.forEach(i=>{
+          i.style.width = i.getAttribute('data-width') || '60%';
+        });
       }
-      return array;
-    }
+    });
+  }, {threshold: 0.18});
+  reveals.forEach(r=>observer.observe(r));
+}
 
-    function shuffleNames() {
-      const input = document.getElementById("nameInput");
-      let names = input.value.split(",").map(n => n.trim()).filter(n => n);
-      names = shuffle(names);
-      input.value = names.join(", ");
-      alert("Names shuffled!");
-    }
+/* ---------- PROJECT MODALS ---------- */
+const projectData = {
+  lab: {title:'Personal Cyber Lab', body:'A virtualized lab environment — multiple VMs, isolated networks, and reproducible practice tasks for learning both offense and defense.'},
+  blog: {title:'Leadership Blog', body:'Short essays on resilience, historical strategy, and applying lessons from warfare to leadership and teams.'},
+  tools: {title:'Tools & Scripts', body:'Small Linux-first utilities and scripts to automate routine lab tasks and speed up learning.'}
+};
 
-    function startDraw() {
-      const input = document.getElementById("nameInput").value;
-      let max = parseInt(document.getElementById("maxWinners").value) || Infinity;
-      let names = input.split(",").map(n => n.trim()).filter(n => n && !winners.includes(n));
+/* ---------- COPY & DOWNLOAD ACTIONS ---------- */
+function initActions() {
+  document.getElementById('copyEmail')?.addEventListener('click', async ()=>{
+    const text = document.getElementById('emailText')?.textContent || 'kevin@example.com';
+    try { await navigator.clipboard.writeText(text); alert('Email copied!') } catch(e){ prompt('Copy this email:', text) }
+  });
+  document.getElementById('copyPhone')?.addEventListener('click', async ()=>{
+    const num = '+234-000-000-0000';
+    try { await navigator.clipboard.writeText(num); alert('Phone copied!') } catch(e){ prompt('Phone number:', num) }
+  });
+  // Download lightweight resume (text) created inline
+  document.getElementById('downloadResume')?.addEventListener('click', (e)=>{
+    e.preventDefault();
+    const resume = [
+      'Kevin — Cybersecurity & Strategy',
+      '',
+      'Skills: Cybersecurity, Linux, Networking, Web basics, Strategic thinking',
+      '',
+      'Projects: Personal Cyber Lab, Leadership Blog, Tools & Scripts',
+      '',
+      'Contact: kevin@example.com'
+    ].join('\n');
+    const blob = new Blob([resume], {type:'text/plain'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = 'Kevin_Resume.txt'; document.body.appendChild(a); a.click();
+    a.remove(); URL.revokeObjectURL(url);
+  });
 
-      if (winners.length >= max) {
-        alert("Maximum number of winners reached.");
-        return;
-      }
+  // Projects -> modal
+  document.querySelectorAll('.project').forEach(el=>{
+    el.addEventListener('click', ()=> {
+      const key = el.getAttribute('data-proj');
+      const data = projectData[key] || {title:'Project', body:'Details coming soon.'};
+      document.getElementById('modalTitle').textContent = data.title;
+      document.getElementById('modalBody').textContent = data.body;
+      const modal = document.getElementById('modal'); modal.classList.add('show'); modal.setAttribute('aria-hidden','false');
+      // trap simple focus
+      document.getElementById('modalClose').focus();
+    });
+  });
+  document.getElementById('modalClose').addEventListener('click', ()=> {
+    document.getElementById('modal').classList.remove('show'); document.getElementById('modal').setAttribute('aria-hidden','true');
+  });
+  document.getElementById('modal').addEventListener('click', (ev)=>{
+    if (ev.target === ev.currentTarget) { document.getElementById('modal').classList.remove('show'); document.getElementById('modal').setAttribute('aria-hidden','true') }
+  });
 
-      if (names.length === 0) {
-        alert("No more unique names left to draw.");
-        return;
-      }
+  // Back to top
+  const toTop = document.getElementById('toTop');
+  toTop.addEventListener('click', ()=> window.scrollTo({top:0,behavior:'smooth'}));
+  window.addEventListener('scroll', ()=> {
+    if (window.scrollY > 300) toTop.style.display = 'block'; else toTop.style.display = 'none';
+  });
+}
 
-      const drumroll = document.getElementById("drumroll");
-      const winnerSound = document.getElementById("winnerSound");
-      drumroll.play();
+/* ---------- THEME TOGGLE ---------- */
+function initThemeToggle(){
+  const btn = document.getElementById('themeToggle');
+  if(!btn) return;
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme:dark)').matches;
+  let dark = localStorage.getItem('kevin_theme') ?? (prefersDark ? '1' : '1');
+  applyTheme(dark === '1');
+  btn.addEventListener('click', ()=>{
+    dark = (localStorage.getItem('kevin_theme') === '1') ? '0' : '1';
+    localStorage.setItem('kevin_theme', dark);
+    applyTheme(dark === '1');
+    btn.setAttribute('aria-pressed', (dark === '1').toString());
+  });
+}
+function applyTheme(isDark){
+  if(!isDark){
+    document.documentElement.style.setProperty('--bg-1','#f7fafc');
+    document.documentElement.style.setProperty('--bg-2','#eef2ff');
+    document.documentElement.style.setProperty('--accent','#0b6bff');
+    document.documentElement.style.setProperty('--accent-2','#7c3aed');
+    document.body.style.color = '#071226';
+  } else {
+    document.documentElement.style.setProperty('--bg-1','#081224');
+    document.documentElement.style.setProperty('--bg-2','#061224');
+    document.documentElement.style.setProperty('--accent','#00d4ff');
+    document.documentElement.style.setProperty('--accent-2','#8b5cf6');
+    document.body.style.color = '#e6f0ff';
+  }
+}
 
-      let result = document.getElementById("result");
-      result.innerHTML = "Spinning...";
-      let index = 0;
-      let spins = 30;
-      let interval = setInterval(() => {
-        result.innerHTML = names[index % names.length];
-        index++;
-        spins--;
-        if (spins === 0) {
-          clearInterval(interval);
-          const winner = names[Math.floor(Math.random() * names.length)];
-          result.innerHTML = `🎊 Winner: ${winner} 🏆`;
-          winners.push(winner);
-          updateHistory();
-          launchConfetti();
-          drumroll.pause();
-          drumroll.currentTime = 0;
-          winnerSound.play();
-        }
-      }, 100);
-    }
+/* ---------- INIT ALL ---------- */
+ready(()=>{
+  typingEl = document.getElementById('typed');
+  tick();
+  particlesInit();
+  initReveal();
+  initActions();
+  initThemeToggle();
 
-    function updateHistory() {
-      const list = document.getElementById("winnerList");
-      list.innerHTML = "";
-      winners.forEach((w, i) => {
-        const li = document.createElement("li");
-        li.textContent = `${i + 1}. ${w}`;
-        list.appendChild(li);
-      });
-    }
+  // reveal helper on load
+  setTimeout(()=> document.querySelectorAll('.reveal').forEach((r,i)=> setTimeout(()=> r.classList.add('show'), i*120)), 400);
+});
+</script>
 
-    function resetGame() {
-      winners = [];
-      document.getElementById("result").innerHTML = "";
-      document.getElementById("winnerList").innerHTML = "";
-      alert("Game has been reset.");
-    }
-
-    function toggleTheme() {
-      document.body.classList.toggle("dark-mode");
-      isDark = !isDark;
-    }
-  </script>
 </body>
 </html>

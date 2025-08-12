@@ -1,0 +1,193 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Color scheme */
+  --bg-1: hsl(218, 41%, 3%);
+  --bg-2: hsl(218, 35%, 6%);
+  --panel: hsla(0, 0%, 100%, 0.03);
+  --panel-hover: hsla(0, 0%, 100%, 0.05);
+  --muted: hsl(215, 20%, 65%);
+  --accent: hsl(184, 95%, 73%);
+  --accent2: hsl(258, 87%, 71%);
+  --glass: hsla(0, 0%, 100%, 0.025);
+  --success: hsl(142, 76%, 56%);
+  --error: hsl(0, 84%, 60%);
+  --warning: hsl(38, 92%, 50%);
+  
+  /* Layout */
+  --radius: 14px;
+  --maxw: 1200px;
+  --ff: 'Inter', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  
+  /* Shadows */
+  --shadow-sm: 0 4px 20px hsla(218, 60%, 8%, 0.3);
+  --shadow-md: 0 8px 40px hsla(218, 60%, 8%, 0.4);
+  --shadow-lg: 0 20px 60px hsla(218, 60%, 8%, 0.6);
+
+  /* Tailwind overrides */
+  --background: hsl(218, 41%, 3%);
+  --foreground: hsl(200, 68%, 92%);
+  --card: hsl(218, 35%, 6%);
+  --card-foreground: hsl(200, 68%, 92%);
+  --popover: hsl(218, 35%, 6%);
+  --popover-foreground: hsl(200, 68%, 92%);
+  --primary: hsl(184, 95%, 73%);
+  --primary-foreground: hsl(218, 45%, 15%);
+  --secondary: hsl(218, 35%, 6%);
+  --secondary-foreground: hsl(200, 68%, 92%);
+  --muted: hsl(218, 15%, 25%);
+  --muted-foreground: hsl(215, 20%, 65%);
+  --accent: hsl(184, 95%, 73%);
+  --accent-foreground: hsl(218, 45%, 15%);
+  --destructive: hsl(0, 84%, 60%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --border: hsla(0, 0%, 100%, 0.02);
+  --input: hsla(0, 0%, 100%, 0.02);
+  --ring: hsl(184, 95%, 73%);
+}
+
+body.light {
+  --bg-1: hsl(249, 100%, 99%);
+  --bg-2: hsl(249, 32%, 96%);
+  --panel: hsla(0, 0%, 100%, 0.8);
+  --panel-hover: hsla(0, 0%, 100%, 0.9);
+  --muted: hsl(215, 25%, 47%);
+  --accent: hsl(184, 95%, 39%);
+  --accent2: hsl(258, 87%, 50%);
+  
+  /* Light theme Tailwind overrides */
+  --background: hsl(249, 100%, 99%);
+  --foreground: hsl(218, 95%, 14%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(218, 95%, 14%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(218, 95%, 14%);
+  --primary: hsl(184, 95%, 39%);
+  --primary-foreground: hsl(0, 0%, 98%);
+  --secondary: hsl(215, 25%, 95%);
+  --secondary-foreground: hsl(218, 95%, 14%);
+  --muted: hsl(215, 25%, 95%);
+  --muted-foreground: hsl(215, 25%, 47%);
+  --accent: hsl(184, 95%, 39%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --border: hsla(0, 0%, 0%, 0.05);
+  --input: hsla(0, 0%, 0%, 0.05);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: var(--ff);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: hsl(200, 68%, 92%);
+  background: 
+    radial-gradient(800px 400px at 10% 10%, hsla(258, 87%, 71%, 0.04), transparent 8%),
+    radial-gradient(700px 300px at 90% 90%, hsla(184, 95%, 73%, 0.02), transparent 6%),
+    linear-gradient(180deg, var(--bg-1), var(--bg-2));
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background 0.45s ease, color 0.3s ease;
+}
+
+body.light {
+  color: hsl(218, 95%, 14%);
+  background: 
+    radial-gradient(800px 400px at 10% 10%, hsla(258, 87%, 71%, 0.02), transparent 8%),
+    radial-gradient(700px 300px at 90% 90%, hsla(184, 95%, 73%, 0.02), transparent 6%),
+    linear-gradient(180deg, var(--bg-1), var(--bg-2));
+}
+
+/* Custom utility classes */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.reveal.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Glass morphism effects */
+.glass-panel {
+  background: linear-gradient(180deg, var(--panel), var(--panel-hover));
+  border-radius: var(--radius);
+  border: 1px solid hsla(0, 0%, 100%, 0.02);
+  backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s ease;
+}
+
+.glass-panel:hover {
+  background: linear-gradient(180deg, var(--panel-hover), var(--panel));
+  transform: translateY(-2px);
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-2);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--muted);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+}

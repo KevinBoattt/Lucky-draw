@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Abele Ifeanyi Kelvin — Cybersecurity · Design · Trading</title>
+<meta name="description" content="Abele Ifeanyi Kelvin — cybersecurity, design, trading. Laid-back portfolio and contact page." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%23121828'/%3E%3Ctext x='50' y='60' text-anchor='middle' font-size='44' fill='%23fff'%3E K %3C/text%3E%3C/svg%3E">
+
+<style>
+/* ---------------------- ROOT & RESET ---------------------- */
+:root{
+  --bg-1: #05060a;
+  --bg-2: #0b0f17;
+  --panel: rgba(255,255,255,0.03);
+  --muted: #9aa6ba;
+  --accent: #7afcff;
+  --accent2: #7a49ff;
+  --glass: rgba(255,255,255,0.025);
+  --radius: 14px;
+  --maxw: 1180px;
+  --ff: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:var(--ff);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  color:#e6f3ff;
+  background:
+    radial-gradient(800px 400px at 10% 10%, rgba(122,73,255,0.04), transparent 8%),
+    radial-gradient(700px 300px at 90% 90%, rgba(122,249,255,0.02), transparent 6%),
+    linear-gradient(180deg,var(--bg-1),var(--bg-2));
+  min-height:100vh;
+  overflow-x:hidden;
+  padding:28px 18px;
+  transition: background .45s ease, color .3s ease;
+}
+
+/* Light theme variables applied dynamically */
+body.light {
+  color: #071226;
+  background:
+    radial-gradient(800px 400px at 10% 10%, rgba(122,73,255,0.02), transparent 8%),
+    radial-gradient(700px 300px at 90% 90%, rgba(0,212,255,0.02), transparent 6%),
+    linear-gradient(180deg,#f8fafc,#eef2ff);
+}
+
+/* ---------------------- LAYOUT ---------------------- */
+.container{
+  max-width:var(--maxw);
+  margin:40px auto;
+  display:grid;
+  grid-template-columns: 1fr 380px;
+  gap:28px;
+  align-items:start;
+  position:relative;
+  z-index:10;
+}
+
+/* Top floating bar */
+.topbar{
+  position:fixed;left:0;right:0;top:12px;display:flex;justify-content:center;pointer-events:none;z-index:60;
+}
+.topbar-inner{
+  width:min(var(--maxw), calc(100% - 40px));
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border-radius:12px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;
+  pointer-events:all;border:1px solid rgba(255,255,255,0.03);backdrop-filter: blur(6px);
+}
+.brand{display:flex;gap:12px;align-items:center}
+.logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent2),var(--accent));display:flex;align-items:center;justify-content:center;color:#041226;font-weight:800}
+.topnav{display:flex;gap:8px;align-items:center}
+.topnav a{color:#e6f3ff;text-decoration:none;padding:8px;border-radius:8px;font-size:14px}
+.topnav a:hover{color:var(--accent)}
+
+/* ---------------------- MAIN PANEL ---------------------- */
+.panel{
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border-radius: var(--radius);
+  padding:26px;
+  border:1px solid rgba(255,255,255,0.02);
+  box-shadow: 0 20px 50px rgba(2,6,23,0.6);
+  position:relative;
+  overflow:hidden;
+}
+
+/* HERO */
+.hero{display:flex;gap:22px;align-items:center}
+.hero-left{flex:1}
+.eyebrow{color:var(--muted);font-size:13px;margin-bottom:8px}
+h1{font-size:28px;margin-bottom:6px}
+.name-accent{color:var(--accent);font-weight:700}
+.typing{color:var(--accent);font-weight:600;margin-bottom:10px}
+.bio{color:#cfe9ff;margin-bottom:12px;max-width:64ch}
+
+/* avatar blob */
+.avatar{
+  width:200px;height:200px;border-radius:16px;background:linear-gradient(135deg, rgba(122,73,255,0.12), rgba(0,212,255,0.04));
+  border:1px solid rgba(255,255,255,0.03);display:flex;align-items:center;justify-content:center;flex:0 0 200px;
+}
+
+/* actions */
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.btn{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#041226;border:0;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;box-shadow:0 8px 26px rgba(122,73,255,0.06)}
+.btn.ghost{background:transparent;color:var(--accent);border:1px solid rgba(255,255,255,0.04)}
+.btn.small{padding:8px 10px;font-size:13px}
+
+/* grid areas below hero */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px}
+.card{background:var(--panel);padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.02)}
+.card h3{color:var(--accent);margin-bottom:8px}
+.muted{color:var(--muted)}
+
+/* skills */
+.skills-list{display:flex;flex-direction:column;gap:12px}
+.skill-row{display:flex;justify-content:space-between;align-items:center}
+.bar{height:12px;background:rgba(255,255,255,0.03);border-radius:999px;overflow:hidden;width:65%}
+.bar > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:999px;transition:width 1.2s cubic-bezier(.2,.9,.2,1)}
+
+/* projects */
+.projects{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.project{padding:12px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.015), transparent);cursor:pointer;transition:transform .18s}
+.project:hover{transform:translateY(-6px)}
+
+/* aside */
+aside.sidebar{position:sticky;top:96px;display:flex;flex-direction:column;gap:12px}
+.socials{display:flex;gap:8px;flex-wrap:wrap}
+
+/* contact form */
+form.contact-form{display:flex;flex-direction:column;gap:10px}
+input[type="text"], input[type="email"], textarea{background:transparent;border:1px solid rgba(255,255,255,0.03);padding:10px;border-radius:10px;color:inherit;font-size:14px}
+textarea{min-height:110px;resize:vertical}
+
+/* modal */
+.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(2,6,23,0.6),rgba(2,6,23,0.85));z-index:120;padding:18px}
+.modal.show{display:flex}
+.modal-card{width:min(920px,94%);background:#061622;padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);max-height:86vh;overflow:auto}
+.modal .close-btn{background:transparent;border:0;color:var(--muted);font-weight:700;cursor:pointer;padding:8px;border-radius:8px}
+
+/* back to top */
+.to-top{position:fixed;right:18px;bottom:18px;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#041226;border-radius:12px;padding:10px 12px;border:0;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,0.6);display:none}
+
+/* reveal util */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease, transform .7s ease}
+.reveal.show{opacity:1;transform:none}
+
+/* responsive */
+@media (max-width:1040px){ .container{grid-template-columns:1fr} .avatar{display:none} aside.sidebar{position:static} }
+@media (max-width:520px){ h1{font-size:20px} .actions{justify-content:center} .topbar-inner{padding:8px} }
+</style>
+</head>
+<body>
+
+<!-- PARTICLES CANVAS -->
+<canvas id="particles" aria-hidden="true" style="position:fixed;inset:0;z-index:0;pointer-events:none"></canvas>
+
+<!-- TOP BAR -->
+<header class="topbar" role="banner" aria-hidden="false">
+  <div class="topbar-inner" role="navigation" aria-label="Main navigation">
+    <div class="brand" aria-hidden="false">
+      <div class="logo" aria-hidden="true">K</div>
+      <div>
+        <div style="font-size:15px;font-weight:700">Abele Ifeanyi Kelvin</div>
+        <div style="font-size:12px;color:var(--muted)">cybersecurity • design • trading</div>
+      </div>
+    </div>
+
+    <nav class="topnav" aria-label="top-navigation">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+      <button id="themeToggle" class="btn small" aria-pressed="false" title="Toggle theme">Theme</button>
+    </nav>
+  </div>
+</header>
+
+<!-- MAIN LAYOUT -->
+<main class="container" role="main" aria-labelledby="main-title">
+
+  <!-- LEFT PANEL -->
+  <section class="panel" aria-labelledby="main-title">
+    <div class="hero">
+      <div class="hero-left">
+        <div class="eyebrow">Student • Builder • No-nonsense</div>
+        <h1 id="main-title">Abele Ifeanyi <span class="name-accent">Kelvin</span> <span style="font-size:18px;color:var(--muted)">— Kevin</span></h1>
+        <div class="typing" id="typed">Just a guy who’s into cybersecurity, design, and trading.</div>
+        <p class="bio">Just a guy who’s into cybersecurity, design, and trading. I figure things out, build cool stuff, and keep it moving.</p>
+
+        <div class="actions" role="group" aria-label="quick actions">
+          <button id="downloadResume" class="btn">Download Resume</button>
+          <button id="copyEmail" class="btn ghost">Copy Email</button>
+          <a class="btn ghost" href="https://wa.me/2348160729143" target="_blank" rel="noopener">WhatsApp</a>
+          <button id="openContact" class="btn ghost">Message</button>
+        </div>
+      </div>
+
+      <div class="avatar" aria-hidden="true">
+        <svg width="120" height="120" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Avatar">
+          <defs>
+            <linearGradient id="gA" x1="0" x2="1"><stop offset="0" stop-color="#7a49ff"/><stop offset="1" stop-color="#7afcff"/></linearGradient>
+            <filter id="f1"><feGaussianBlur stdDeviation="8"/></filter>
+          </defs>
+          <g filter="url(#f1)" opacity="0.18"><ellipse cx="100" cy="85" rx="72" ry="52" fill="url(#gA)"/></g>
+          <circle cx="100" cy="100" r="44" fill="#071423"/>
+          <text x="100" y="116" text-anchor="middle" font-size="42" fill="#e6f3ff" font-weight="700" font-family="Inter,Arial">K</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-top:22px">
+      <div class="card reveal" id="about">
+        <h3>About</h3>
+        <p class="muted">I’m focused on learning and building. Labs, small tools, neat designs, quick trades — I keep it practical and direct.</p>
+        <ul style="margin-top:10px;color:var(--muted);list-style:disc;padding-left:16px">
+          <li>Setting up personal cyber labs and VMs</li>
+          <li>Small web/design projects that look clean</li>
+          <li>Trading experiments and strategy notes</li>
+        </ul>
+      </div>
+
+      <div class="card reveal" id="contact-short">
+        <h3>Contact</h3>
+        <p class="muted">Email or WhatsApp works best. I check messages.</p>
+        <div style="margin-top:10px" class="contact-line">
+          <button class="btn ghost" id="openContactShort">Send a message</button>
+          <a class="btn" href="mailto:kevokeka6@gmail.com">Email</a>
+        </div>
+        <div style="margin-top:12px;font-size:13px;color:var(--muted)"><strong>Email:</strong> <span id="emailText">kevokeka6@gmail.com</span></div>
+      </div>
+
+      <div class="card reveal" style="grid-column:1 / -1" id="projects">
+        <h3>Projects</h3>
+        <div class="projects">
+          <div class="project" data-proj="lab"><strong>Personal Cyber Lab</strong><div class="muted" style="margin-top:6px">VMs, networks, and hands-on practice.</div></div>
+          <div class="project" data-proj="design"><strong>Design Snippets</strong><div class="muted" style="margin-top:6px">UI/UX micro-projects & templates.</div></div>
+          <div class="project" data-proj="trading"><strong>Trading Notes</strong><div class="muted" style="margin-top:6px">Short experiments & lessons learned.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RIGHT: SIDEBAR -->
+  <aside class="sidebar" aria-label="Sidebar">
+    <div class="card reveal">
+      <h3>Quick Skills</h3>
+      <div class="skills-list" id="skills">
+        <div>
+          <div class="skill-row"><span>Cybersecurity</span><span class="muted">92%</span></div>
+          <div class="bar"><i data-width="92%"></i></div>
+        </div>
+        <div>
+          <div class="skill-row"><span>Design</span><span class="muted">78%</span></div>
+          <div class="bar"><i data-width="78%"></i></div>
+        </div>
+        <div>
+          <div class="skill-row"><span>Trading</span><span class="muted">70%</span></div>
+          <div class="bar"><i data-width="70%"></i></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card reveal">
+      <h3>Follow</h3>
+      <div class="socials">
+        <a class="btn ghost" href="https://github.com/kevinboattt" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn ghost" href="https://wa.me/2348160729143" target="_blank" rel="noopener">WhatsApp</a>
+      </div>
+    </div>
+
+    <div class="card reveal">
+      <h3>Resume</h3>
+      <p class="muted" style="margin-bottom:8px">Download a quick text resume.</p>
+      <button class="btn" id="downloadResume2">Download</button>
+    </div>
+  </aside>
+
+</main>
+
+<!-- CONTACT MODAL -->
+<div id="contactModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="modal-card" role="document" aria-labelledby="contactModalTitle">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <h3 id="contactModalTitle">Send a message</h3>
+      <button id="contactModalClose" class="close-btn">Close</button>
+    </div>
+
+    <!-- FormSubmit: will email to kevokeka6@gmail.com after confirmation -->
+    <form class="contact-form" id="contactForm" action="https://formsubmit.co/kevokeka6@gmail.com" method="POST">
+      <input type="text" name="_honey" style="display:none">
+      <input type="hidden" name="_next" value="https://kevinboattt.github.io/Lucky-draw/">
+      <input type="hidden" name="_subject" value="New message from portfolio">
+      <label class="muted" for="name">Your name</label>
+      <input id="name" name="name" type="text" placeholder="Your name" required>
+      <label class="muted" for="email">Email</label>
+      <input id="email" name="email" type="email" placeholder="you@example.com" required>
+      <label class="muted" for="message">Message</label>
+      <textarea id="message" name="message" placeholder="Say something..." required></textarea>
+
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
+        <button type="submit" class="btn">Send</button>
+        <button type="button" id="cancelForm" class="btn ghost">Cancel</button>
+      </div>
+    </form>
+    <p style="font-size:12px;color:var(--muted);margin-top:10px">This uses FormSubmit — first submit will send a confirmation email to your inbox. Click the link there to enable message forwarding to your email.</p>
+  </div>
+</div>
+
+<!-- PROJECT MODAL -->
+<div id="projectModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="modal-card" role="document" aria-labelledby="projectModalTitle">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <h3 id="projectModalTitle">Project</h3>
+      <button id="projectModalClose" class="close-btn">Close</button>
+    </div>
+    <div id="projectModalBody" style="color:var(--muted);line-height:1.5"></div>
+  </div>
+</div>
+
+<!-- BACK TO TOP -->
+<button id="toTop" class="to-top" aria-label="Back to top">Top</button>
+
+<script>
+/* ---------------------- HELPERS ---------------------- */
+const ready = (fn) => (document.readyState !== 'loading' ? fn() : document.addEventListener('DOMContentLoaded', fn));
+
+/* ---------------------- TYPING ---------------------- */
+function typeIntro(){
+  const el = document.getElementById('typed');
+  if(!el) return;
+  const txt = "Just a guy who’s into cybersecurity, design, and trading.";
+  let i = 0;
+  (function step(){
+    el.textContent = txt.slice(0,i);
+    i++;
+    if(i<=txt.length) setTimeout(step, 28 + Math.random()*30);
+  })();
+}
+
+/* ---------------------- PARTICLES ---------------------- */
+function initParticles(){
+  const canvas = document.getElementById('particles'); if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let w = canvas.width = innerWidth;
+  let h = canvas.height = innerHeight;
+  const DPR = Math.max(1, window.devicePixelRatio || 1);
+  canvas.width = w * DPR; canvas.height = h * DPR; canvas.style.width = w + 'px'; canvas.style.height = h + 'px'; ctx.scale(DPR,DPR);
+
+  const N = Math.max(28, Math.floor((w*h)/80000));
+  const pts = [];
+  for(let i=0;i<N;i++) pts.push({
+    x: Math.random()*w, y: Math.random()*h,
+    r: 0.8 + Math.random()*2.3,
+    vx: (Math.random()-0.5)*0.6, vy: (Math.random()-0.5)*0.6,
+    hue: 170 + Math.random()*90, life: 200 + Math.random()*600
+  });
+
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    for(const p of pts){
+      p.x += p.vx; p.y += p.vy; p.life--;
+      if(p.x < -20) p.x = w+20;
+      if(p.x > w+20) p.x = -20;
+      if(p.y < -20) p.y = h+20;
+      if(p.y > h+20) p.y = -20;
+      const a = Math.max(0, Math.min(1, p.life/600));
+      ctx.beginPath();
+      ctx.fillStyle = `hsla(${p.hue},80%,60%,${a*0.12})`;
+      ctx.arc(p.x, p.y, p.r*3, 0, Math.PI*2);
+      ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', ()=> {
+    w = canvas.width = innerWidth;
+    h = canvas.height = innerHeight;
+    canvas.width = w * DPR; canvas.height = h * DPR; canvas.style.width = w + 'px'; canvas.style.height = h + 'px'; ctx.scale(DPR,DPR);
+  });
+
+  draw();
+}
+
+/* ---------------------- REVEAL & SKILL BARS ---------------------- */
+function initReveal(){
+  const reveals = document.querySelectorAll('.reveal');
+  const bars = document.querySelectorAll('.bar > i');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('show');
+        bars.forEach(b => { b.style.width = b.getAttribute('data-width') || '60%'; });
+      }
+    });
+  }, {threshold: 0.18});
+  reveals.forEach(r => observer.observe(r));
+}
+
+/* ---------------------- MODALS ---------------------- */
+function initContactModal(){
+  const openBtns = [document.getElementById('openContact'), document.getElementById('openContactShort')];
+  const modal = document.getElementById('contactModal');
+  const close = document.getElementById('contactModalClose');
+  const cancel = document.getElementById('cancelForm');
+
+  openBtns.forEach(btn => btn?.addEventListener('click', () => {
+    modal.classList.add('show'); modal.setAttribute('aria-hidden','false');
+    document.getElementById('name')?.focus();
+  }));
+  close?.addEventListener('click', () => { modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); });
+  cancel?.addEventListener('click', () => { modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); });
+  modal?.addEventListener('click', (e) => { if(e.target === modal){ modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); } });
+}
+
+function initProjectModal(){
+  const projects = document.querySelectorAll('.project');
+  const modal = document.getElementById('projectModal');
+  const close = document.getElementById('projectModalClose');
+  const title = document.getElementById('projectModalTitle');
+  const body = document.getElementById('projectModalBody');
+
+  const data = {
+    lab: {t:'Personal Cyber Lab', b:'Personal lab with virtual machines, isolated networks, and practice tasks to learn offensive and defensive skills.'},
+    design: {t:'Design Snippets', b:'UI/UX micro-projects, templates and small experiments that look clean and feel smooth.'},
+    trading: {t:'Trading Notes', b:'Short trading experiments, backtests and lessons learned from small position sizing.'}
+  };
+
+  projects.forEach(p => p.addEventListener('click', () => {
+    const key = p.getAttribute('data-proj');
+    const info = data[key] || {t:'Project', b:'Details coming soon.'};
+    title.textContent = info.t; body.textContent = info.b;
+    modal.classList.add('show'); modal.setAttribute('aria-hidden','false');
+  }));
+
+  close?.addEventListener('click', ()=> { modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); });
+  modal?.addEventListener('click', (e)=> { if(e.target === modal){ modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); } });
+}
+
+/* ---------------------- ACTIONS ---------------------- */
+function initActions(){
+  document.getElementById('downloadResume')?.addEventListener('click', (e)=>{
+    e.preventDefault();
+    const txt = [
+      'Abele Ifeanyi Kelvin (Kevin)',
+      '',
+      'Bio: Just a guy who’s into cybersecurity, design, and trading. I figure things out, build cool stuff, and keep it moving.',
+      '',
+      'Skills: Cybersecurity, Design, Trading',
+      '',
+      'Contact: kevokeka6@gmail.com'
+    ].join('\n');
+    const blob = new Blob([txt], {type:'text/plain'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = 'Kevin_Resume.txt'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  });
+
+  document.getElementById('downloadResume2')?.addEventListener('click', ()=> document.getElementById('downloadResume')?.click());
+
+  document.getElementById('copyEmail')?.addEventListener('click', async ()=>{
+    const text = document.getElementById('emailText')?.textContent || 'kevokeka6@gmail.com';
+    try{ await navigator.clipboard.writeText(text); alert('Email copied.'); }catch(e){ prompt('Copy email:', text); }
+  });
+
+  // Back to top control
+  const toTop = document.getElementById('toTop');
+  toTop.addEventListener('click', ()=> window.scrollTo({top:0,behavior:'smooth'}));
+  window.addEventListener('scroll', ()=> { if(window.scrollY>320) toTop.style.display='block'; else toTop.style.display='none'; });
+
+  // ESC closes modals
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape'){
+      ['contactModal','projectModal'].forEach(id=>{
+        const m = document.getElementById(id);
+        if(m && m.classList.contains('show')){ m.classList.remove('show'); m.setAttribute('aria-hidden','true'); }
+      });
+    }
+  });
+}
+
+/* ---------------------- THEME TOGGLE ---------------------- */
+function initThemeToggle(){
+  const btn = document.getElementById('themeToggle');
+  const key = 'kevin_theme';
+  const stored = localStorage.getItem(key);
+  let dark = stored !== 'light'; // default dark
+  applyTheme(dark ? 'dark' : 'light');
+  btn?.addEventListener('click', ()=>{
+    dark = !dark;
+    localStorage.setItem(key, dark ? 'dark' : 'light');
+    applyTheme(dark ? 'dark' : 'light');
+    btn.setAttribute('aria-pressed', (!dark).toString());
+  });
+}
+function applyTheme(mode){
+  if(mode === 'light'){ document.body.classList.add('light'); }
+  else{ document.body.classList.remove('light'); }
+}
+
+/* ---------------------- INIT ---------------------- */
+ready(()=>{
+  typeIntro();
+  initParticles();
+  initReveal();
+  initContactModal();
+  initProjectModal();
+  initActions();
+  initThemeToggle();
+
+  // reveal initial elements nicely
+  setTimeout(()=> document.querySelectorAll('.reveal').forEach((r,i)=> setTimeout(()=> r.classList.add('show'), i*90)), 320);
+});
+</script>
+
+</body>
+</html>
